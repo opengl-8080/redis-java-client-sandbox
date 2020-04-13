@@ -1,0 +1,14 @@
+@echo off
+
+set REPLICATION_DIR=%WORK_DIR%\replication
+set SLAVE_DIR=%REPLICATION_DIR%\slave
+set MASTER_DIR=%REPLICATION_DIR%\master
+
+set REPLICATION_PATH=%VOLUME_PATH%/replication
+set SLAVE_PATH=%REPLICATION_PATH%/slave
+set MASTER_PATH=%REPLICATION_PATH%/master
+
+set MASTER_CONTAINER_NAME=redis-master
+set SLAVE_CONTAINER_NAME=redis-slave
+
+exit /b 0

@@ -1,0 +1,23 @@
+plugins {
+    id "application"
+}
+
+sourceCompatibility = 11
+targetCompatibility = 11
+compileJava.options.encoding = "UTF-8"
+
+mainClassName = "sandbox.redis.Main"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'io.lettuce:lettuce-core:5.2.2.RELEASE'
+    implementation 'redis.clients:jedis:3.2.0'
+    implementation 'org.redisson:redisson:3.12.4'
+}
+
+run {
+    standardInput = System.in
+}

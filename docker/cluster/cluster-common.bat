@@ -1,0 +1,26 @@
+@echo off
+
+set CLUSTER_DIR=%WORK_DIR%\cluster
+set CONTAINER1_DIR=%CLUSTER_DIR%\instance1
+set CONTAINER2_DIR=%CLUSTER_DIR%\instance2
+set CONTAINER3_DIR=%CLUSTER_DIR%\instance3
+set CONTAINER4_DIR=%CLUSTER_DIR%\instance4
+set CONTAINER5_DIR=%CLUSTER_DIR%\instance5
+set CONTAINER6_DIR=%CLUSTER_DIR%\instance6
+
+set CLUSTER_PATH=%VOLUME_PATH%/cluster
+set CONTAINER1_PATH=%CLUSTER_PATH%/instance1
+set CONTAINER2_PATH=%CLUSTER_PATH%/instance2
+set CONTAINER3_PATH=%CLUSTER_PATH%/instance3
+set CONTAINER4_PATH=%CLUSTER_PATH%/instance4
+set CONTAINER5_PATH=%CLUSTER_PATH%/instance5
+set CONTAINER6_PATH=%CLUSTER_PATH%/instance6
+
+set CONTAINER1_NAME=redis-instance1
+set CONTAINER2_NAME=redis-instance2
+set CONTAINER3_NAME=redis-instance3
+set CONTAINER4_NAME=redis-instance4
+set CONTAINER5_NAME=redis-instance5
+set CONTAINER6_NAME=redis-instance6
+
+exit /b 0
