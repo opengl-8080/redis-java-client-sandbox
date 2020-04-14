@@ -56,7 +56,8 @@ public class Main {
             RedisSentinelConfig config = new RedisSentinelConfig().masterId("mysentinel")
                     .addSentinel("redis-sentinel1", 26379)
                     .addSentinel("redis-sentinel2", 26379)
-                    .addSentinel("redis-sentinel3", 26379);
+                    .addSentinel("redis-sentinel3", 26379)
+                    .addSentinel("redis-sentinel4", 26379);
             
             return factory.createSentinel(config);
         } else if (target.equals("cluster")) {

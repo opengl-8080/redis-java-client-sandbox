@@ -45,6 +45,12 @@ call %RUN_CONTAINER% ^
     %THIS_DIR%redis-sentinel.conf ^
     %SENTINEL3_CONTAINER_NAME% ^
     redis-sentinel
+call %RUN_CONTAINER% ^
+    %SENTINEL4_DIR% ^
+    %SENTINEL4_PATH% ^
+    %THIS_DIR%redis-sentinel.conf ^
+    %SENTINEL4_CONTAINER_NAME% ^
+    redis-sentinel
 
 docker ps
 pause
