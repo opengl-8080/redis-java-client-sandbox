@@ -1,2 +1,2 @@
 # redis-java-client-sandbox
-Comparing Redis Java Clients (Jedis, Jedisson, Lettuce).
+Comparing Redis Java Clients (Jedis, Redisson, Lettuce).
