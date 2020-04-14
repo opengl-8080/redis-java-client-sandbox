@@ -11,7 +11,7 @@ import sandbox.redis.config.RedisClusterConfig;
 import sandbox.redis.config.RedisSentinelConfig;
 import sandbox.redis.config.RedisStandaloneConfig;
 
-public class RedissonRedisClinetFacadeFactory implements RedisClientFacadeFactory {
+public class RedissonRedisClientFacadeFactory implements RedisClientFacadeFactory {
 
     @Override
     public RedisClientFacade createStandalone(RedisStandaloneConfig config) {

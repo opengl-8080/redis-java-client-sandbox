@@ -5,7 +5,7 @@ import sandbox.redis.config.RedisSentinelConfig;
 import sandbox.redis.config.RedisStandaloneConfig;
 import sandbox.redis.jedis.JedisRedisClientFacadeFactory;
 import sandbox.redis.lettuce.LettuceRedisClientFacadeFactory;
-import sandbox.redis.redisson.RedissonRedisClinetFacadeFactory;
+import sandbox.redis.redisson.RedissonRedisClientFacadeFactory;
 
 import java.util.Map;
 
@@ -37,7 +37,7 @@ public class Main {
         Map<String, Class<? extends RedisClientFacadeFactory>> factoryMap = Map.of(
                 "jedis", JedisRedisClientFacadeFactory.class,
                 "lettuce", LettuceRedisClientFacadeFactory.class,
-                "redisson", RedissonRedisClinetFacadeFactory.class
+                "redisson", RedissonRedisClientFacadeFactory.class
         );
 
         if (!factoryMap.containsKey(clientType)) {
