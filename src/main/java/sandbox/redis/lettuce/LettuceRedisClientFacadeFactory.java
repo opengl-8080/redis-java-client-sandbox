@@ -1,5 +1,6 @@
 package sandbox.redis.lettuce;
 
+import io.lettuce.core.ClientOptions;
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;
 import io.lettuce.core.TimeoutOptions;
@@ -32,7 +33,17 @@ public class LettuceRedisClientFacadeFactory implements RedisClientFacadeFactory
         config.sentinels.forEach(sentinel -> builder.withSentinel(sentinel.host, sentinel.port));
         RedisURI uri = builder.build();
         RedisClient client = RedisClient.create(uri);
+
+        TimeoutOptions timeoutOptions = TimeoutOptions.builder()
+                .fixedTimeout(Duration.ofSeconds(20))
+                .build();
+
+        ClientOptions options = ClientOptions.builder()
+                .timeoutOptions(timeoutOptions)
+                .build();
         
+        client.setOptions(options);
+
         return new LettuceRedisClientFacade(client);
     }
 

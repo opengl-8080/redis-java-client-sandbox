@@ -1,5 +1,6 @@
 package sandbox.redis.jedis;
 
+import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisCluster;
@@ -26,7 +27,7 @@ public class JedisRedisClientFacadeFactory implements RedisClientFacadeFactory {
     public RedisClientFacade createSentinel(RedisSentinelConfig config) {
         Set<String> sentinels = config.sentinels.stream().map(sentinel -> sentinel.host + ":" + sentinel.port).collect(Collectors.toSet());
 
-        JedisSentinelPool pool = new JedisSentinelPool(config.masterId, sentinels);
+        JedisSentinelPool pool = new JedisSentinelPool(config.masterId, sentinels, new GenericObjectPoolConfig(), 10000);
 
         return new JedisRedisSentinelClientFacade(pool);
     }
