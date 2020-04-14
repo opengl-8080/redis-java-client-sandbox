@@ -28,7 +28,7 @@ public class RedissonRedisClientFacadeFactory implements RedisClientFacadeFactor
     public RedisClientFacade createSentinel(RedisSentinelConfig config) {
         Config redissonConfig = new Config();
         SentinelServersConfig builder = redissonConfig.useSentinelServers().setMasterName(config.masterId);
-        config.sentinels.forEach(sentinel -> builder.addSentinelAddress(sentinel.host + ":" + sentinel.port));
+        config.sentinels.forEach(sentinel -> builder.addSentinelAddress("redis://" + sentinel.host + ":" + sentinel.port));
 
         RedissonClient redission = Redisson.create(redissonConfig);
 
