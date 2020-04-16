@@ -15,10 +15,13 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class JedisRedisClientFacadeFactory implements RedisClientFacadeFactory {
+    
+    private static final int TIMEOUT = 20_000;
+    private static final int MAX_ATTEMPTS = 10;
 
     @Override
     public RedisClientFacade createStandalone(RedisStandaloneConfig config) {
-        Jedis jedis = new Jedis(config.hostConfig.host, config.hostConfig.port);
+        Jedis jedis = new Jedis(config.hostConfig.host, config.hostConfig.port, TIMEOUT);
         
         return new JedisRedisClientFacade(jedis);
     }
@@ -27,7 +30,7 @@ public class JedisRedisClientFacadeFactory implements RedisClientFacadeFactory {
     public RedisClientFacade createSentinel(RedisSentinelConfig config) {
         Set<String> sentinels = config.sentinels.stream().map(sentinel -> sentinel.host + ":" + sentinel.port).collect(Collectors.toSet());
 
-        JedisSentinelPool pool = new JedisSentinelPool(config.masterId, sentinels, new GenericObjectPoolConfig(), 10000);
+        JedisSentinelPool pool = new JedisSentinelPool(config.masterId, sentinels, new GenericObjectPoolConfig(), TIMEOUT);
 
         return new JedisRedisSentinelClientFacade(pool);
     }
@@ -38,6 +41,7 @@ public class JedisRedisClientFacadeFactory implements RedisClientFacadeFactory {
                 .map(node -> new HostAndPort(node.host, node.port))
                 .collect(Collectors.toSet());
 
+//        JedisCluster jedis = new JedisCluster(hostAndPortSet, TIMEOUT, MAX_ATTEMPTS);
         JedisCluster jedis = new JedisCluster(hostAndPortSet);
 
         return new JedisRedisClusterClientFacade(jedis);

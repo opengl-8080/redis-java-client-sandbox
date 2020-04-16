@@ -23,6 +23,12 @@ public class LettuceRedisClientFacadeFactory implements RedisClientFacadeFactory
     public RedisClientFacade createStandalone(RedisStandaloneConfig config) {
         RedisURI uri = RedisURI.create(config.hostConfig.host, config.hostConfig.port);
         RedisClient client = RedisClient.create(uri);
+
+        ClientOptions options = ClientOptions.builder()
+                .timeoutOptions(createTimeoutOptions())
+                .build();
+
+        client.setOptions(options);
         
         return new LettuceRedisClientFacade(client);
     }
@@ -34,12 +40,8 @@ public class LettuceRedisClientFacadeFactory implements RedisClientFacadeFactory
         RedisURI uri = builder.build();
         RedisClient client = RedisClient.create(uri);
 
-        TimeoutOptions timeoutOptions = TimeoutOptions.builder()
-                .fixedTimeout(Duration.ofSeconds(20))
-                .build();
-
         ClientOptions options = ClientOptions.builder()
-                .timeoutOptions(timeoutOptions)
+                .timeoutOptions(createTimeoutOptions())
                 .build();
         
         client.setOptions(options);
@@ -57,17 +59,19 @@ public class LettuceRedisClientFacadeFactory implements RedisClientFacadeFactory
                 .enableAllAdaptiveRefreshTriggers()
                 .build();
 
-        TimeoutOptions timeoutOptions = TimeoutOptions.builder()
-                .fixedTimeout(Duration.ofSeconds(15))
-                .build();
-
         ClusterClientOptions clientOptions = ClusterClientOptions.builder()
                 .topologyRefreshOptions(topologyOptions)
-                .timeoutOptions(timeoutOptions)
+                .timeoutOptions(createTimeoutOptions())
                 .build();
         
         client.setOptions(clientOptions);
 
         return new LettuceRedisClusterClientFacade(client);
+    }
+    
+    private TimeoutOptions createTimeoutOptions() {
+        return TimeoutOptions.builder()
+                .fixedTimeout(Duration.ofSeconds(20))
+                .build();
     }
 }

@@ -12,13 +12,17 @@ import sandbox.redis.config.RedisSentinelConfig;
 import sandbox.redis.config.RedisStandaloneConfig;
 
 public class RedissonRedisClientFacadeFactory implements RedisClientFacadeFactory {
+    
+    private static final int RETRY_ATTEMPTS = 15;
+    private static final int RETRY_INTERVAL = 10000;
 
     @Override
     public RedisClientFacade createStandalone(RedisStandaloneConfig config) {
         Config redissonConfig = new Config();
         redissonConfig.useSingleServer()
-                .setDatabase(0)
-                .setAddress("redis://" + config.hostConfig.host + ":" + config.hostConfig.port);
+                .setAddress("redis://" + config.hostConfig.host + ":" + config.hostConfig.port)
+                .setRetryAttempts(RETRY_ATTEMPTS)
+                .setRetryInterval(RETRY_INTERVAL);
 
         RedissonClient redisson = Redisson.create(redissonConfig);
         return new RedissonRedisClientFacade(redisson);
@@ -29,8 +33,8 @@ public class RedissonRedisClientFacadeFactory implements RedisClientFacadeFactor
         Config redissonConfig = new Config();
         SentinelServersConfig builder = redissonConfig.useSentinelServers()
                 .setMasterName(config.masterId)
-                .setRetryAttempts(15)
-                .setRetryInterval(10000);
+                .setRetryAttempts(RETRY_ATTEMPTS)
+                .setRetryInterval(RETRY_INTERVAL);
         config.sentinels.forEach(sentinel -> builder.addSentinelAddress("redis://" + sentinel.host + ":" + sentinel.port));
 
         RedissonClient redission = Redisson.create(redissonConfig);
@@ -41,7 +45,10 @@ public class RedissonRedisClientFacadeFactory implements RedisClientFacadeFactor
     @Override
     public RedisClientFacade createCluster(RedisClusterConfig config) {
         Config redissonConfig = new Config();
-        ClusterServersConfig builder = redissonConfig.useClusterServers();
+        ClusterServersConfig builder = redissonConfig
+                .useClusterServers()
+                .setRetryAttempts(RETRY_ATTEMPTS)
+                .setRetryInterval(RETRY_INTERVAL);
         config.nodes.forEach(node -> builder.addNodeAddress("redis://" + node.host + ":" + node.port));
 
         RedissonClient redisson = Redisson.create(redissonConfig);
