@@ -1,5 +1,6 @@
 package sandbox.redis.lettuce;
 
+import io.lettuce.core.ReadFrom;
 import io.lettuce.core.cluster.RedisClusterClient;
 import io.lettuce.core.cluster.api.StatefulRedisClusterConnection;
 import sandbox.redis.RedisClientFacade;
@@ -11,6 +12,7 @@ public class LettuceRedisClusterClientFacade implements RedisClientFacade {
     public LettuceRedisClusterClientFacade(RedisClusterClient client) {
         this.client = client;
         this.connection = client.connect();
+        this.connection.setReadFrom(ReadFrom.REPLICA);
     }
 
     @Override

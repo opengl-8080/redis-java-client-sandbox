@@ -9,7 +9,8 @@
     </appender>
 
 <!--    <logger name="org.springframework.data.redis" level="debug" />-->
-<!--    <logger name="io.lettuce.core.protocol.RedisStateMachine" level="debug" />-->
+<!--    <logger name="io.lettuce.core.RedisClient" level="debug" />-->
+<!--    <logger name="io.lettuce.core.protocol.CommandHandler" level="debug" />-->
 
     <root level="info">
         <appender-ref ref="CONSOLE" />

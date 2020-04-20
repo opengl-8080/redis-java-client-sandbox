@@ -1,7 +1,6 @@
 package sandbox.redis.lettuce;
 
 import io.lettuce.core.ClientOptions;
-import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;
 import io.lettuce.core.TimeoutOptions;
 import io.lettuce.core.cluster.ClusterClientOptions;
@@ -22,15 +21,12 @@ public class LettuceRedisClientFacadeFactory implements RedisClientFacadeFactory
     @Override
     public RedisClientFacade createStandalone(RedisStandaloneConfig config) {
         RedisURI uri = RedisURI.create(config.hostConfig.host, config.hostConfig.port);
-        RedisClient client = RedisClient.create(uri);
-
+        
         ClientOptions options = ClientOptions.builder()
                 .timeoutOptions(createTimeoutOptions())
                 .build();
-
-        client.setOptions(options);
         
-        return new LettuceRedisClientFacade(client);
+        return new LettuceRedisClientFacade(uri, options);
     }
 
     @Override
@@ -38,15 +34,12 @@ public class LettuceRedisClientFacadeFactory implements RedisClientFacadeFactory
         RedisURI.Builder builder = RedisURI.builder().withSentinelMasterId(config.masterId);
         config.sentinels.forEach(sentinel -> builder.withSentinel(sentinel.host, sentinel.port));
         RedisURI uri = builder.build();
-        RedisClient client = RedisClient.create(uri);
-
+        
         ClientOptions options = ClientOptions.builder()
                 .timeoutOptions(createTimeoutOptions())
                 .build();
-        
-        client.setOptions(options);
 
-        return new LettuceRedisClientFacade(client);
+        return new LettuceRedisClientFacade(uri, options);
     }
 
     @Override
@@ -55,7 +48,7 @@ public class LettuceRedisClientFacadeFactory implements RedisClientFacadeFactory
         RedisClusterClient client = RedisClusterClient.create(nodeSet);
 
         ClusterTopologyRefreshOptions topologyOptions = ClusterTopologyRefreshOptions.builder()
-                .enablePeriodicRefresh(Duration.ofSeconds(1))
+                .enablePeriodicRefresh(Duration.ofSeconds(30))
                 .enableAllAdaptiveRefreshTriggers()
                 .build();
 
@@ -71,7 +64,7 @@ public class LettuceRedisClientFacadeFactory implements RedisClientFacadeFactory
     
     private TimeoutOptions createTimeoutOptions() {
         return TimeoutOptions.builder()
-                .fixedTimeout(Duration.ofSeconds(20))
+                .fixedTimeout(Duration.ofSeconds(60))
                 .build();
     }
 }
